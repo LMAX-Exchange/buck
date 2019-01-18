@@ -68,6 +68,8 @@ from .util import (
     is_special,
 )
 
+'a'.encode('ascii')
+
 # When build files are executed, the functions in this file tagged with
 # @provide_for_build will be provided in the build file's local symbol table.
 # Those tagged with @provide_as_native_rule will be present unless
