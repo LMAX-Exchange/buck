@@ -69,6 +69,9 @@ from .util import (
     is_special,
 )
 
+# This is a hack that forces encoding to be loaded before this script
+# starts messing with the import model.  When run under pyrun it prevents
+# some of the internal libraries from loading.
 'a'.encode('ascii')
 
 # When build files are executed, the functions in this file tagged with
@@ -1465,21 +1468,21 @@ class BuildFileProcessor(object):
             # Restore original 'open' because it is used by 'inspect.currentframe()' in
             # '_called_from_project_file()'
             with self._wrap_file_access(wrap=False):
-                if self._called_from_project_file():
-                    path = os.path.abspath(filename)
-                    if path not in self._current_build_env.includes:
-                        dep_path = "//" + os.path.relpath(path, self._project_root)
-                        warning_message = (
-                            "Access to a non-tracked file detected! {0} is not a ".format(
-                                path
-                            )
-                            + "known dependency and it should be added using 'add_build_file_dep' "
-                            + "function before trying to access the file, e.g.\n"
-                            + "'add_build_file_dep('{0}')'\n".format(dep_path)
-                            + "The 'add_build_file_dep' function is documented at "
-                            + "https://buck.build/function/add_build_file_dep.html\n"
-                        )
-                        self._emit_warning(warning_message, "sandboxing")
+                # if self._called_from_project_file():
+                #     path = os.path.abspath(filename)
+                #     if path not in self._current_build_env.includes:
+                #         dep_path = "//" + os.path.relpath(path, self._project_root)
+                #         warning_message = (
+                #             "Access to a non-tracked file detected! {0} is not a ".format(
+                #                 path
+                #             )
+                #             + "known dependency and it should be added using 'add_build_file_dep' "
+                #             + "function before trying to access the file, e.g.\n"
+                #             + "'add_build_file_dep('{0}')'\n".format(dep_path)
+                #             + "The 'add_build_file_dep' function is documented at "
+                #             + "https://buck.build/function/add_build_file_dep.html\n"
+                #         )
+                #         self._emit_warning(warning_message, "sandboxing")
 
                 return real(filename, *arg, **kwargs)
 
