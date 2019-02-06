@@ -72,6 +72,7 @@ from .util import (
 # starts messing with the import model.  When run under pyrun it prevents
 # some of the internal libraries from loading.
 'a'.encode('ascii')
+'a'.encode('utf8')
 
 # When build files are executed, the functions in this file tagged with
 # @provide_for_build will be provided in the build file's local symbol table.
